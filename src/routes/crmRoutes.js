@@ -1,29 +1,33 @@
+import { addNewContact,
+        getContacts,
+        getContactWithID,
+        updateContact,
+        deleteContact
+} from "../controllers/crmController"
+
 const routes = (app) => {
     app.route('/contact')
 
         //nextはexpressのlibrary
         .get((req,res, next) => {
-            //middleware
+            //middleware（）expressのfunction. requestやresponceobkjectにアクセスして実際に動かす
             //この２つはterminalにprintされる
             console.log(`Request from : ${req.originalUrl}`)
             console.log(`Request from : ${req.method}`)
             next();
-        }, (req, res, next) => {  
-            //これはfrontに表示される 
-            res.send('GET request successful!')
-        })
+        }, getContacts)
       
+    //Post endpoint
+    .post(addNewContact);
 
-    .post((req, res) =>
-        res.send('POST request successfil!'))
-
-       //single contact 
+    //single contact 
     app.route('/contact/:contactID')
-        .put((req,res) =>
-        res.send('PUT request successful!'))    
-
-        .delete((req,res) =>
-        res.send('DELETE request successful!'))    
+        //get a specific contact
+        .get(getContactWithID)
+        //update specific contact
+        .put(updateContact)    
+        //delete specific contact
+        .delete(deleteContact)    
     }
 
     export default routes;
